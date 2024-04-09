@@ -25,8 +25,7 @@ def train(model, dm, name, epochs=40, precision="32", debug=False):
         fast_dev_run=False,
         logger=logger,
         callbacks=callbacks,
-        accelerator='auto',
-        devices=[0],       
+        devices='auto',       
         num_nodes=1,
         sync_batchnorm=True,
         deterministic='warn',
@@ -39,7 +38,7 @@ def train(model, dm, name, epochs=40, precision="32", debug=False):
     trainer.fit(model, datamodule=dm)
 
     # Test best model on test set
-    model = type(model).load_from_checkpoint(trainer.checkpoint_callback.best_model_path)
+    model = type(model).load_from_checkpoint(trainer.checkpoint_callback.best_model_path, map_location=map_location)
     
     print(trainer.test(model, datamodule=dm, verbose=False))
     
@@ -66,7 +65,7 @@ if __name__ == "__main__":
     match args.dataset:
        
         case "RML1610":
-            dm = RML2016DataModule('/home/RML2016.10b.dat', args.bs, is_10b=True, seed=args.seed)
+            dm = RML2016DataModule('/home/narges/Downloads/RML2016_10b/RML2016.10b.dat', args.bs, is_10b=True, seed=args.seed)
         case "TeMuRAMRD_v2.3":
             dm =SimpleHDF5DataModule("/home/TeMuRAMRD_v2.3.h5py", args.bs, n_rx=args.nrx)   
 
