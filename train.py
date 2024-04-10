@@ -65,7 +65,7 @@ if __name__ == "__main__":
     match args.dataset:
        
         case "RML1610":
-            dm = RML2016DataModule('/home/narges/Downloads/RML2016_10b/RML2016.10b.dat', args.bs, is_10b=True, seed=args.seed)
+            dm = RML2016DataModule('/home/RML2016_10b/RML2016.10b.dat', args.bs, is_10b=True, seed=args.seed)
         case "TeMuRAMRD_v2.3":
             dm =SimpleHDF5DataModule("/home/TeMuRAMRD_v2.3.h5py", args.bs, n_rx=args.nrx)   
 
