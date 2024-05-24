@@ -33,19 +33,8 @@ class SimpleHDF5DataModule(pl.LightningDataModule):
                 y = torch.from_numpy(f['y'][()]).to(torch.long)
                 snr = torch.from_numpy(f['P_rx'][()][:,:self.n_rx])
             
-            # Scenario C
-            # x = x.swapaxes(0, 1).flatten(0, 1)[:,None]
-            # y = torch.cat([y for i in range(self.n_rx)])
-            # snr = torch.cat([snr for i in range(self.n_rx)])
-
-            # snr = 10*np.log10(torch.sum(10**(snr.squeeze(-1)/10),-1))
-            snr = snr.flatten(1)
-
-            ######*****Ken told that
-            #added comment according to 
-            #P_noise = -173.8 + 10 * np.log10(30e3)
-            #snr = snr - P_noise
             
+            snr = snr.flatten(1)
             ds_full = StackDataset(x=x, y=y, snr=snr)
             print(f"Dataset size: {len(ds_full)}")
 
